@@ -1,0 +1,22 @@
+body {
+  color: #444;
+}
+
+select, input, form span {
+    font-size: 1.2em;
+}
+
+option {
+    padding: 0px 10px;
+}
+
+input[type=number] {
+    text-align: right
+}
+
+form {
+  text-align: left;
+  padding: 0 15px;
+  width: 90%;
+  margin: 50px auto;
+}

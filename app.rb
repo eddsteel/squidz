@@ -157,6 +157,9 @@ helpers do
   end
 end
 
+# TODO:
+# AJAX
+
 __END__
 
 @@layout

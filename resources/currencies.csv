@@ -3,26 +3,26 @@ Pound Sterling,gbp,United Kingdom,£
 Euro,eur,Europe,€
 Canadian Dollar,cad,Canada,$
 United States Dollar,usd,United States,$
-Polish Złoty,pln,Poland,
+Polish Złoty,pln,Poland,Ƶ
 Australian Dollar,aud,Australia,$
 Brazilian Real,brl,Brazil,
 Swiss Franc,chf,Switzerland,F
 Chinese Yuan,cny,China,
-Danish Krone,dkk,Denmark,
+Danish Krone,dkk,Denmark,K
 Hong Kong Dollar,hkd,Hong Kong,
-Indian Rupee,inr,India,
-Japanese Yen,jpy,Japan,
+Indian Rupee,inr,India,R
+Japanese Yen,jpy,Japan,¥
 Korea Won,krw,Korea,
 Sri Lanka Rupee,lkr,Sri Lanka,
 Malasian Ringgit,myr,Malasia,
 New Zealand Dollar,nzd,New Zealand,
 Singapore Dollar,sgd,Singapore,
 Taiwan Dollar,twd,Taiwan,
-South African Rand,zar,South Africa,
+South African Rand,zar,South Africa,R
 Venezuelan Bolivar,veb,Venezuela,
 Thai Baht,thb,Thailand,
-Swedish Krona,sek,Sweden,
-Norwegian Krone,nok,Norway,
+Swedish Krona,sek,Sweden,K
+Norwegian Krone,nok,Norway,K
 Mexican Peso,mxn,Mexico,
 Bulgarian Lev,bgn,Bulgaria,
 Czech Koruna,czk,Czech Republic,
@@ -44,7 +44,7 @@ Salvadoran colon,svc,El Salvador,
 Tunisian Dinar,tnd,Tunisia,
 Paraguay Guarani,pyg,Paraguay,
 Moroccan Dirham,mad,Morocco,
-Jamaican Dollar,jmd,Jamaica,
+Jamaican Dollar,jmd,Jamaica,$
 Saudi Arabian Riyal,sar,Saudi Arabia,
 Qatari Riyal,qar,Qatar,
 Honduran Lempira,hnl,Honduras,

@@ -148,12 +148,8 @@ helpers do
   end
 
   def convert(base, target, amount)
-    puts request.accept
-    puts "Converting #{base} #{amount} to #{target}"
-    puts "We are #{@@offline ? 'offline' : 'online'}"
     if (@@offline)
-      json_result = '{"result":{"value":166.24,"target":' + 
-        '"gbp","base":"eur"},"status":"ok"}'
+      json_result = %Q[{"result":{"value":166.241,"target":"#{target}","base":"#{base}"},"status":"ok"}]
     else
       json_result = query(base, target, amount)
     end

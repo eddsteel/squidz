@@ -99,7 +99,7 @@ get '/' do
   @currencies = @@currencies
   case derive_format(request.accept)
   when 'text/html'
-    haml :index
+    haml :page
   end
 end
 
@@ -110,7 +110,8 @@ get '/:base/:target/:amount' do |base, target, amount|
 
   case derive_format(request.accept)
   when 'text/html'
-    haml :result
+    haml :page, :locals => {:title=> @result.to_s,
+      :base => base, :target => target, :amount => amount}
   when 'text/json'
     @result.json
   when 'text/plain'
@@ -130,6 +131,7 @@ helpers do
       redirect target
     end
   end
+
   def derive_format(formats)
     if formats.member? 'text/html'
       'text/html'
@@ -166,26 +168,27 @@ __END__
 %html{:lang => 'en'}
   %head
     %meta{:charset => 'utf-8'}
-    %title Convertor!
-    %link{:rel => 'stylesheet', :href => 'style.css'}
+    %title
+      = title || 'Convertor!'
+    %link{:rel => 'stylesheet', :href => '/style.css'}
   %body
     =yield
 
-@@index
+@@page
 %form{:method => 'get', :action=>'/'}
   %select{:id => 'src', :name => 'src'}
     - @currencies.each do |currency|
-      %option{:value => currency.code}
+      %option{:value => currency.code, :selected => base && base == currency.code ? 'selected' : nil}
         = currency.label
   %input{:id => 'amount', :name => 'amount', :type => 'number', :value => 1, :autofocus=>'autofocus', :min=>0, :max=> 999999999, :step => 0.1}
   %span
     in
   %select{:id=>'target', :name => 'target'}
-    - @currencies.each do |currency|
-      %option{:value => currency.code}
+    - target_currencies = [@currencies[1], @currencies[0]] + @currencies[2..-1]
+    - target_currencies.each do |currency|
+      %option{:value => currency.code, :selected => target && target == currency.code ? 'selected' : nil}
         = currency.label
   %input{:type => 'submit', :value => 'convert'}
-
-@@result
-%p did something
-%p= @result.to_s
+- if @result
+  .result
+    = @result.to_h

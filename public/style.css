@@ -3,20 +3,36 @@ body {
 }
 
 select, input, form span {
-    font-size: 1.2em;
+	font-size: 1.2em;
 }
 
 option {
-    padding: 0px 10px;
+	padding: 0px 10px;
 }
 
 input[type=number] {
-    text-align: right
+	text-align: right
 }
 
-form {
+form, .result {
   text-align: left;
   padding: 0 15px;
   width: 90%;
   margin: 50px auto;
+}
+
+.result {
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  background-color: #f0fff0;
+  border: 3px solid #9d9;
+  font-size: 1.4em;
+  padding: 0.5em 0 1em;
+  text-align: center;
+  width: 60%;
+}
+
+
+.result .target-value {
+  font-weight: bold;
 }

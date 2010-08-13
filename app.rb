@@ -15,21 +15,39 @@ require 'omgcsv'
 class Result
   attr_reader :amount, :base, :target, :value, :json
 
-  def initialize(amount, response)
+  def initialize(amount, response, currencies)
     @json = response
     @amount = amount
     map = JSON.parse(response)
-    @base,@target,@value = 
-      map['result']['base'], 
+    @currencies = currencies
+    base,target,value =
+      map['result']['base'],
       map['result']['target'],
       map['result']['value']
+    @base = currencies.find {|currency| currency.code == base}
+    raise "Can't find #{base}" if @base.nil?
+    @target = currencies.find {|currency| currency.code == target}
+    raise "Can't find #{target}" if @target.nil?
+    @value = round(value.to_f)
     [@json, @amount, @base, @target, @value].each do |val|
       val.freeze
     end
   end
 
   def to_s
-    "#{@base}#{@amount} is #{@target}#{@value}"
+    "#{@target.to_s_s}#{@value}"
+  end
+
+  def to_h
+    "#{@base.to_s_s}#{@amount} is " +
+    "<span class='target-value'>#{@target.to_s_s}" +
+    "#{@value}</span>"
+  end
+
+  private
+  def round(n, dps=2)
+    dp_val = 10 ** dps
+    n.to_i + (((n - (n.to_i)) * dp_val).to_i).to_f / dp_val
   end
 end
 
@@ -75,6 +93,7 @@ get '/' do
 end
 
 get '/:base/:target/:amount' do |base, target, amount|
+  @currencies = @@currencies
   @amount = amount
   @result = convert(base, target, amount)
 
@@ -125,7 +144,7 @@ helpers do
     else
       json_result = query(base, target, amount)
     end
-    Result.new(amount, json_result)
+    Result.new(amount, json_result, @@currencies)
   end
 end
 

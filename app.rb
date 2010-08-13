@@ -72,6 +72,17 @@ class Currency
   def Currency.load(row)
     Currency.new(row.symbol, row.code, row.label)
   end
+
+  def to_s_s
+    return @symbol if @symbol
+    return @code.upcase
+  end
+
+  def ==(other)
+    other.symbol == @symbol &&
+      other.code == @code &&
+      other.label == @label
+  end
 end
 
 set :haml, {:format => :html5 }

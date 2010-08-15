@@ -11,7 +11,8 @@ body > footer a {
 body > footer {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 5%;
+  width: 90%;
   color: #ddd;
   font-size: .8em;
 }

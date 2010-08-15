@@ -1,38 +1,59 @@
-body {
-  color: #444;
+body > footer .copyright {
+  float: right;
 }
 
-select, input, form span {
-	font-size: 1.2em;
+body > footer a {
+  color: #ccc;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+body > footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  color: #ddd;
+  font-size: .8em;
+}
+
+.result .links {
+  font-size: 0.4em;
+}
+
+body {
+  color: #444444;
+  font-family: helvetica, verdana, arial;
+}
+
+select, input, form span, button {
+  font-size: 1.2em;
 }
 
 option {
-	padding: 0px 10px;
+  padding: 0 10px;
 }
 
-input[type=number] {
-	text-align: right
+input[type="number"] {
+  text-align: right;
 }
 
 form, .result {
-  text-align: left;
-  padding: 0 15px;
-  width: 90%;
   margin: 50px auto;
+  padding: 0 15px;
+  text-align: left;
+  width: 90%;
 }
 
 .result {
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  background-color: #f0fff0;
-  border: 3px solid #9d9;
+  -moz-border-radius: 10px 10px 10px 10px;
+  background-color: #F0FFF0;
+  border: 3px solid #99DD99;
   font-size: 1.4em;
   padding: 0.5em 0 1em;
   text-align: center;
   width: 60%;
 }
 
-
-.result .target-value {
+.target-value {
   font-weight: bold;
 }

@@ -94,23 +94,43 @@ end
 get '/' do
   redirect_for_params(request.params)
   @currencies = @@currencies
-  case derive_format(request.accept)
+  @title, @base, @target, @amount = Array.new(4){nil}
+  case derive_mime(request)
   when 'text/html'
-    haml :page, :locals => {:title => nil, :base => nil,
-      :target => nil, :amount => nil}
+    haml :page
   end
 end
 
+get '/:base/:target/:amount.:format' do |base, target, amount, format|
+  mime = case format
+         when 'json'
+           'application/json'
+         when 'txt'
+           'text/plain'
+         else
+           'text/html'
+         end
+  respond(base, target, amount, mime)
+end
+
 get '/:base/:target/:amount' do |base, target, amount|
+  respond(base, target, amount, derive_mime(request))
+end
+
+def respond(base, target, amount, mime='text/html')
   @currencies = @@currencies
   @amount = amount
   @result = convert(base, target, amount)
+  @base = base
+  @target = target
+  @amount = amount
+  @title = @result.to_s
 
-  case derive_format(request.accept)
+  content_type mime, :charset => 'utf-8'
+  case mime
   when 'text/html'
-    haml :page, :locals => {:title=> @result.to_s,
-      :base => base, :target => target, :amount => amount}
-  when 'text/json'
+    haml :page
+  when 'application/json'
     @result.json
   when 'text/plain'
     @result.to_s
@@ -118,23 +138,30 @@ get '/:base/:target/:amount' do |base, target, amount|
 end
 
 helpers do
+  def query_url(base, target, amount, format=nil)
+    %Q{/#{base}/#{target}/#{amount}#{format ? ".#{format}" : ''}}
+  end
+  
   def redirect_for_params(params)
     unless (params.empty?)
       target = '/'
       if ['amount', 'src', 'target'].all? do |param|
-          params.key? param
-        end
-        target += "#{params['src']}/#{params['target']}/#{params['amount']}"
+        params.key? param
+      end
+      target = query_url(params['src'], 
+                         params['target'], 
+                         params['amount'])
       end
       redirect target
     end
   end
 
-  def derive_format(formats)
+  def derive_mime(request)
+    formats = request.accept
     if formats.member? 'text/html'
       'text/html'
-    elsif formats.member? 'text/json'
-      'text/json'
+    elsif formats.member? 'application/json'
+      'application/json'
     else
       'text/plain'
     end
@@ -166,26 +193,42 @@ __END__
   %head
     %meta{:charset => 'utf-8'}
     %title
-      = title || 'Convertor!'
+      = @title || 'Convertor!'
     %link{:rel => 'stylesheet', :href => '/style.css'}
   %body
     =yield
+    %footer
+      %span.thanks
+        Currency conversion by <a href="http://xurrency.com">xurrency.com</a>
+      %span.copyright
+        &copy; 2010 Edward Steel. Code <a href="http://github.com/eddsteel/squidz">released</a> under GNU GPL
 
 @@page
 %form{:method => 'get', :action=>'/'}
   %select{:id => 'src', :name => 'src'}
     - @currencies.each do |currency|
-      %option{:value => currency.code, :selected => base && base == currency.code ? 'selected' : nil}
+      %option{:value => currency.code, :selected => @base && @base == currency.code ? 'selected' : nil}
         = currency.label
-  %input{:id => 'amount', :name => 'amount', :type => 'number', :value => 1, :autofocus=>'autofocus', :min=>0, :max=> 999999999, :step => 0.1}
+  %input{:id => 'amount', :name => 'amount', :type => 'number', :value => @amount || 1, :autofocus=>'autofocus', :min=>0, :max=> 999999999, :step => 0.1}
   %span
     in
   %select{:id=>'target', :name => 'target'}
     - target_currencies = [@currencies[1], @currencies[0]] + @currencies[2..-1]
     - target_currencies.each do |currency|
-      %option{:value => currency.code, :selected => target && target == currency.code ? 'selected' : nil}
+      %option{:value => currency.code, :selected => @target && @target == currency.code ? 'selected' : nil}
         = currency.label
-  %input{:type => 'submit', :value => 'convert'}
+  %button{:type => 'submit', :value => 'convert'}
+    convert
 - if @result
   .result
-    = @result.to_h
+    = haml :result, :locals => {:result => @result, :base => @base, :target => @target, :amount => @amount}, :layout => false
+
+@@result
+= @result.to_h
+%span.links<
+  permalinks:
+  - ['html', 'json', 'txt'].each do |format|
+    (
+    %a.spanlink{:href => query_url(base, target, amount, format), :title => "permalink to #{format.upcase} result"}><
+      = format.upcase
+    )

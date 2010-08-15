@@ -99,7 +99,8 @@ get '/' do
   @currencies = @@currencies
   case derive_format(request.accept)
   when 'text/html'
-    haml :page
+    haml :page, :locals => {:title => nil, :base => nil,
+      :target => nil, :amount => nil}
   end
 end
 

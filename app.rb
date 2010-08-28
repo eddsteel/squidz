@@ -251,6 +251,8 @@ __END__
 - if @error
   .error
     = "Couldn't do the conversion, #{@error}"
+%script{:src=>'/ga.js'}
+
 
 @@result
 = @result.to_h

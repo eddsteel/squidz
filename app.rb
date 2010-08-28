@@ -24,6 +24,9 @@ require 'open-uri'
 require 'haml'
 require 'omgcsv'
 
+class ConversionError < Exception
+end
+
 class Result
   attr_reader :amount, :base, :target, :value, :json
 
@@ -135,7 +138,11 @@ end
 def respond(base, target, amount, mime='text/html')
   @currencies = @@currencies
   @amount = amount
-  @result = convert(base, target, amount)
+  begin
+    @result = convert(base, target, amount)
+  rescue ConversionError => json
+    @error = JSON.parse(json)["result"]["message"]
+  end
   @base = base
   @target = target
   @amount = amount
@@ -188,10 +195,14 @@ helpers do
   end
 
   def convert(base, target, amount)
-    if (@@offline)
-      json_result = %Q[{"result":{"value":166.241,"target":"#{target}","base":"#{base}"},"status":"ok"}]
+    unless (@@offline)
+      begin
+        json_result = query(base, target, amount)
+      rescue OpenURI::HTTPError
+        raise ConversionError.new(%Q[{"result":{"message":"All providers are unavailable","status":"error"}}])
+      end
     else
-      json_result = query(base, target, amount)
+      json_result = %Q[{"result":{"value":166.241,"target":"#{target}","base":"#{base}"},"status":"ok"}]
     end
     Result.new(amount, json_result, @@currencies)
   end
@@ -237,6 +248,9 @@ __END__
 - if @result
   .result
     = haml :result, :locals => {:result => @result, :base => @base, :target => @target, :amount => @amount}, :layout => false
+- if @error
+  .error
+    = "Couldn't do the conversion, #{@error}"
 
 @@result
 = @result.to_h

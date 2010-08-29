@@ -197,8 +197,8 @@ helpers do
   def convert(base, target, amount)
     unless (@@offline)
       begin
-        #json_result = query(base, target, amount)
-      #rescue OpenURI::HTTPError
+        json_result = query(base, target, amount)
+      rescue OpenURI::HTTPError
         raise ConversionError.new(%Q[{"result":{"message":"All providers are unavailable","status":"error"}}])
       end
     else

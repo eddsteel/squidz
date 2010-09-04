@@ -13,15 +13,16 @@ body > footer a {
 }
 
 body > footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 5%;
   width: 90%;
-  color: #ddd;
+  color: #ccc;
+  background: #fff;
   font-size: .8em;
 }
 
-.result .links {
+.box .links {
   font-size: 0.4em;
 }
 
@@ -42,24 +43,35 @@ input[type="number"] {
   text-align: right;
 }
 
-form, .result, .error {
+form, .box {
   margin: 50px auto;
   padding: 0 15px;
   text-align: left;
   width: 90%;
 }
 
-.result, .error {
+.box {
   -moz-border-radius: 10px 10px 10px 10px;
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
   font-size: 1.4em;
-  padding: 0.5em 0 1em;
   text-align: center;
   width: 60%;
+}
+
+.box article {
+  padding: 0.5em 0 1em 0;
+  border-bottom: 1px solid black;
+  margin-bottom: -1px;
 }
 
 .result {
   background-color: #F0FFF0;
   border: 3px solid #99DD99;
+}
+.result article
+{
+  border-color: #99DD99;
 }
 
 .error {
@@ -67,6 +79,23 @@ form, .result, .error {
   border: 3px solid #DD9999;
 }
 
+.error article {
+  border-color: #DD9999;
+}
+
+.info {
+  background-color: #F0F0FF;
+  border: 3px solid #9999DD;
+}
+
+.info article {
+  border-color: #9999DD;
+}
+
 .target-value {
   font-weight: bold;
+}
+
+.hidden {
+  display:none;
 }

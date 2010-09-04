@@ -276,10 +276,14 @@ __END__
   .box.result#message
     = haml :result, :layout => false
 - if @error
-  .error
+  .box.error#message
     = "Couldn't do the conversion, #{@error}"
-%script{:src=>'/ga.js'}
-
+- unless @error || @result
+  .box.hidden#message
+    %article.hidden#loadmessage
+      thinking hard...
+- unless @offline
+  %script{:src =>'/ga.js'}
 
 @@result
 %article

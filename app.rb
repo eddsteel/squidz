@@ -284,6 +284,8 @@ __END__
       thinking hard...
 - unless @offline
   %script{:src =>'/ga.js'}
+%script{:src => '/jquery.js'}
+%script{:src => '/behaviour.js'}
 
 @@result
 %article

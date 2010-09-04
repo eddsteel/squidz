@@ -2,6 +2,10 @@ body > footer .copyright {
   float: right;
 }
 
+article {
+  display: block;
+}
+
 body > footer a {
   color: #ccc;
   font-weight: bold;

@@ -265,8 +265,8 @@ __END__
   %button{:type => 'submit', :value => 'convert'}
     convert
 - if @result
-  .result
-    = haml :result, :locals => {:result => @result, :base => @base, :target => @target, :amount => @amount}, :layout => false
+  .box.result#message
+    = haml :result, :layout => false
 - if @error
   .error
     = "Couldn't do the conversion, #{@error}"
@@ -274,11 +274,14 @@ __END__
 
 
 @@result
-= @result.to_h
-%span.links<
-  permalinks:
-  - ['html', 'json', 'txt'].each do |format|
-    (
-    %a.spanlink{:href => query_url(base, target, amount, format), :title => "permalink to #{format.upcase} result"}><
-      = format.upcase
-    )
+%article
+  = @result.to_h
+  %div.links<
+    permalinks:
+    - ['html', 'json', 'txt'].each do |format|
+      (
+      %a.spanlink{:href => query_url(@result.base.code, 
+                                     @result.target.code, 
+                                     @result.amount, format), :title => "permalink to #{format.upcase} result"}><
+        = format.upcase
+      )

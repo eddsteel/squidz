@@ -30,23 +30,17 @@ class ConversionError < Exception
 end
 
 class Result
-  attr_reader :amount, :base, :target, :value, :json
+  attr_reader :amount, :base, :target, :value
 
-  def initialize(amount, response, currencies)
-    @json = response
+  def initialize(amount, base, target, value, currencies)
     @amount = amount
-    map = JSON.parse(response)
     @currencies = currencies
-    base,target,value =
-      map['result']['base'],
-      map['result']['target'],
-      map['result']['value']
     @base = currencies.find {|currency| currency.code == base}
     raise "Can't find #{base}" if @base.nil?
     @target = currencies.find {|currency| currency.code == target}
     raise "Can't find #{target}" if @target.nil?
     @value = round(value.to_f)
-    [@json, @amount, @base, @target, @value].each do |val|
+    [@amount, @base, @target, @value].each do |val|
       val.freeze
     end
   end
@@ -137,31 +131,44 @@ get '/:base/:target/:amount' do |base, target, amount|
   respond(base, target, amount, derive_mime(request))
 end
 
-def respond(base, target, amount, mime='text/html')
-  @currencies = @@currencies
-  @amount = amount
-  begin
-    @result = convert(base, target, amount)
-  rescue ConversionError => json
-    @error = JSON.parse(json)["result"]["message"]
-  end
-  @base = base
-  @target = target
-  @amount = amount
-  @title = @result.to_s
-
-  content_type mime, :charset => 'utf-8'
-  case mime
-  when 'text/html'
-    haml :page
-  when 'application/json'
-    @result.json
-  when 'text/plain'
-    @result.to_s
-  end
-end
-
 helpers do
+  def respond(base, target, amount, mime='text/html')
+    puts mime
+    @currencies = @@currencies
+    @offline = @@offline
+    @amount = amount
+    begin
+      @json = query(base, target, amount)
+      value = parse_value(@json)
+      @result = Result.new(amount, base, target, value,
+                 @@currencies)
+      @code = 200
+    rescue ConversionError => error
+      @error = JSON.parse(error)["result"]["message"]
+      @json = @error # jQuery likes text with HTTP errors
+      @code = error.code
+    end
+    @base = base
+    @target = target
+    @amount = amount
+    @title = @result.to_s
+
+    content_type mime, :charset => 'utf-8'
+    status @code
+    case mime
+    when 'text/html'
+      haml :page
+    when 'application/json'
+      @json
+    when 'text/plain'
+      @result.to_s
+    end
+  end
+
+  def parse_value(json)
+    return JSON.parse(json)['result']['value']
+  end
+
   def query_url(base, target, amount, format=nil)
     %Q{/#{base}/#{target}/#{amount}#{format ? ".#{format}" : ''}}
   end
@@ -191,27 +198,37 @@ helpers do
     end
   end
 
-  def query(base, targt, amnt)
-    url = "http://xurrency.com/api/#{base}/#{targt}/#{amnt}"
-    open(url).read
+  def check_currencies(*currencies)
+    currencies.each do |code|
+      ok = @@currencies.any? do |currency|
+        currency.code == code
+      end
+
+      if (! ok)
+        raise "#{code} is not a valid currency code"
+      end
+    end
   end
 
-  def convert(base, target, amount)
-    unless (@@offline)
-      begin
-        json_result = query(base, target, amount)
-      rescue OpenURI::HTTPError
-        raise ConversionError.new(%Q[{"result":{"message":"All providers are unavailable","status":"error"}}])
-      end
-    else
-      json_result = %Q[{"result":{"value":166.241,"target":"#{target}","base":"#{base}"},"status":"ok"}]
+  def query(base, targt, amnt)
+    begin
+      check_currencies(base, targt)
+    rescue 
+      raise ConversionError.new(406), 
+        %Q[{"result":{"message":"#{$!}"},"status":"error"}]
     end
-    Result.new(amount, json_result, @@currencies)
+    if (@@offline)
+      return %Q[{"result":{"value":166.241,"target":"#{targt}","base":"#{base}"},"status":"ok"}]
+    end
+    begin
+      url = "http://xurrency.com/api/#{base}/#{targt}/#{amnt}"
+      return open(url).read
+    rescue OpenURI::HTTPError
+      raise ConversionError.new(503),
+        %Q[{"result":{"message":"All providers are unavailable"},"status":"error"}]
+    end
   end
 end
-
-# TODO:
-# AJAX
 
 __END__
 

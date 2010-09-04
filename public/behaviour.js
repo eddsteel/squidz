@@ -6,8 +6,8 @@
 
   function render(obj, amount, callback)
   {
-    var queryString = "/render?" + [kvS(obj, 'base'), 
-      kvS(obj, 'target'), kvS(obj, 'value'), 
+    var queryString = "/render?" + [kvS(obj, 'base'),
+      kvS(obj, 'target'), kvS(obj, 'value'),
       'amount='+amount].join('&');
     $.get(queryString, callback);
   }

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby -w
 # Currency converter site
-# 
+#
 # Copyright (C) 2010 Edd Steel (edward.steel@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
@@ -180,15 +180,15 @@ helpers do
   def query_url(base, target, amount, format=nil)
     %Q[/#{base}/#{target}/#{amount}#{format ? ".#{format}" : ''}]
   end
-  
+
   def redirect_for_params(params)
     unless (params.empty?)
       target = '/'
       if ['amount', 'source', 'target'].all? do |param|
         params.key? param
       end
-      target = query_url(params['source'], 
-                         params['target'], 
+      target = query_url(params['source'],
+                         params['target'],
                          params['amount'])
       end
       redirect target
@@ -221,8 +221,8 @@ helpers do
   def query(base, targt, amnt)
     begin
       check_currencies(base, targt)
-    rescue 
-      raise ConversionError.new(406), 
+    rescue
+      raise ConversionError.new(406),
         %Q[{"result":{"message":"#{$!}"},"status":"error"}]
     end
     if (@@offline)
@@ -288,8 +288,8 @@ __END__
     permalinks:
     - ['html', 'json', 'txt'].each do |format|
       (
-      %a.spanlink{:href => query_url(@result.base.code, 
-                                     @result.target.code, 
+      %a.spanlink{:href => query_url(@result.base.code,
+                                     @result.target.code,
                                      @result.amount, format), :title => "permalink to #{format.upcase} result"}><
         = format.upcase
       )

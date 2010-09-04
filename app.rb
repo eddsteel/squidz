@@ -170,7 +170,7 @@ helpers do
   end
 
   def query_url(base, target, amount, format=nil)
-    %Q{/#{base}/#{target}/#{amount}#{format ? ".#{format}" : ''}}
+    %Q[/#{base}/#{target}/#{amount}#{format ? ".#{format}" : ''}]
   end
   
   def redirect_for_params(params)

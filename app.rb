@@ -115,6 +115,14 @@ get '/' do
   end
 end
 
+get '/render' do
+  p = request.params
+  @result = Result.new(p['amount'], p['base'], p['target'],
+    p['value'], @@currencies)
+  content_type 'text/html', :charset => 'utf-8'
+  haml :result, :layout => false
+end
+
 get '/:base/:target/:amount.:format' do |base, target, amount, format|
   mime = case format
          when 'json'

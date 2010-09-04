@@ -245,7 +245,7 @@ __END__
 %html{:lang => 'en'}
   %head
     %meta{:charset => 'utf-8'}
-    %title
+    %title<
       = @title || 'Convertor!'
     %link{:rel => 'stylesheet', :href => '/style.css'}
   %body
@@ -260,17 +260,17 @@ __END__
 %form{:id => 'form', :method => 'get', :action=>'/'}
   %select{:id => 'source', :name => 'source'}
     - @currencies.each do |currency|
-      %option{:value => currency.code, :selected => @base && @base == currency.code ? 'selected' : nil}
+      %option{:value => currency.code, :selected => @base && @base == currency.code ? 'selected' : nil}<
         = currency.label
   %input{:id => 'amount', :name => 'amount', :type => 'number', :value => @amount || 1, :autofocus=>'autofocus', :min=>0, :max=> 999999999, :step => 0.1}
-  %span
+  %span<
     in
   %select{:id=>'target', :name => 'target'}
     - target_currencies = [@currencies[1], @currencies[0]] + @currencies[2..-1]
     - target_currencies.each do |currency|
-      %option{:value => currency.code, :selected => @target && @target == currency.code ? 'selected' : nil}
+      %option{:value => currency.code, :selected => @target && @target == currency.code ? 'selected' : nil}<
         = currency.label
-  %button{:type => 'submit', :value => 'convert'}
+  %button{:type => 'submit', :value => 'convert'}<
     convert
 - if @result
   .box.result#message
@@ -290,12 +290,10 @@ __END__
 @@result
 %article
   = @result.to_h
-  %div.links<
-    permalinks:
+  %div.links
+    links you can bookmark:
     - ['html', 'json', 'txt'].each do |format|
-      (
-      %a.spanlink{:href => query_url(@result.base.code,
-                                     @result.target.code,
-                                     @result.amount, format), :title => "permalink to #{format.upcase} result"}><
+      %a{:href => query_url(@result.base.code,
+                            @result.target.code,
+                            @result.amount, format), :title => "bookmarkable link to #{format.upcase} result"}<
         = format.upcase
-      )

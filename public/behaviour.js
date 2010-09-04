@@ -14,7 +14,7 @@
 
   function displayLoading()
   {
-    var message = '<article id="loadmessage">thinking hard...</article>';
+    var message = '<article id="loadmessage">thinking hard...<div class="links">&nbsp;</div><div class="flip">&nbsp;</div></article>';
     $('#message').prepend(message);
     $('#loadmessage').hide();
     $('#message')[0].className = 'box info';
@@ -22,7 +22,8 @@
   }
 
   var displayError = function(result) {
-    displayMessage('error', result);
+    displayMessage('error', '<article>' + result
+        + '<div class="links">&nbsp;</div><div class="flip">&nbsp;</div></article>');
   }
 
   function displayResult(result, amount)

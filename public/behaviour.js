@@ -14,7 +14,9 @@
   {
     var message = '<article id="loadmessage">thinking hard...</article>';
     $('#message').prepend(message);
-    $('#message')[0].className = 'box info'
+    $('#loadmessage').hide();
+    $('#message')[0].className = 'box info';
+    $('#loadmessage').slideDown('slow');
   }
 
   var display_error = function(result) {
@@ -46,6 +48,9 @@
   {
     $('#message')[0].className = "box " + cssClass;
     $('#loadmessage').replaceWith(message);
+    var newArticle = $('#message article:first');
+    newArticle.hide();
+    newArticle.fadeIn('slow')
   }
 
   function query(source, target, amount, callback)

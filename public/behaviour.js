@@ -46,13 +46,28 @@
    }
   }
 
+  function createFlipLink(link)
+  {
+    var parts = link[0].href.match(
+        /\/([^\/]*)\/([^\/]*)\/([0-9.]*)$/)
+    if (parts)
+    {
+      var fire = function() {
+        return fireQuery(parts[3], parts[2], parts[1])
+      }
+
+      link.click(fire);
+    }
+  }
+
   function displayMessage(cssClass, message)
   {
     $('#message')[0].className = "box " + cssClass;
     $('#loadmessage').replaceWith(message);
     var newArticle = $('#message article:first');
     newArticle.hide();
-    newArticle.fadeIn('slow')
+    newArticle.fadeIn('slow');
+    createFlipLink($('#message article:first .flip a'))
   }
 
   function query(source, target, amount, callback)

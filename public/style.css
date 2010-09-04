@@ -26,6 +26,10 @@ body > footer {
   font-size: 0.4em;
 }
 
+.box .flip {
+  font-size: 0.6em;
+}
+
 body {
   color: #444444;
   font-family: helvetica, verdana, arial;

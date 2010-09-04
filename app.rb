@@ -290,6 +290,12 @@ __END__
 @@result
 %article
   = @result.to_h
+  %div.flip<
+    %a{:href => query_url(@result.target.code,
+                          @result.base.code,
+                          @result.amount), 
+                          :title => "See what #{@result.target.symbol}#{@result.amount} is in #{@result.base.label}"}><
+      flip currencies
   %div.links
     links you can bookmark:
     - ['html', 'json', 'txt'].each do |format|

@@ -176,10 +176,10 @@ helpers do
   def redirect_for_params(params)
     unless (params.empty?)
       target = '/'
-      if ['amount', 'src', 'target'].all? do |param|
+      if ['amount', 'source', 'target'].all? do |param|
         params.key? param
       end
-      target = query_url(params['src'], 
+      target = query_url(params['source'], 
                          params['target'], 
                          params['amount'])
       end
@@ -249,8 +249,8 @@ __END__
         &copy; 2010 Edward Steel. Code <a href="http://github.com/eddsteel/squidz">released</a> under GNU GPL
 
 @@page
-%form{:method => 'get', :action=>'/'}
-  %select{:id => 'src', :name => 'src'}
+%form{:id => 'form', :method => 'get', :action=>'/'}
+  %select{:id => 'source', :name => 'source'}
     - @currencies.each do |currency|
       %option{:value => currency.code, :selected => @base && @base == currency.code ? 'selected' : nil}
         = currency.label

@@ -103,9 +103,19 @@
     return fireQuery(amount, target, source);
   };
 
-  $('#form').bind('submit', fire);
-  createFlipLink($('#message article:first .flip a'))
+  var start = function()
+  {
+    $('#amount').focus();
+    $('#form').bind('submit', fire);
+    var fliplink = $('#message article:first .flip a');
+    if (fliplink.length > 0)
+    {
+      createFlipLink(fliplink);
+    }
+  };
 
+  $(window).load(start);
+ 
 // TODO
 // * make the form submit to a # url instead, and use
 // that.

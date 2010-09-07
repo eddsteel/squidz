@@ -16,6 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+# TODO
+#  decimal output (2.4 displayed as 2.4)
+#  decimals in URL
+#
 
 require 'rubygems'
 require 'sinatra'

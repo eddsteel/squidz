@@ -17,7 +17,7 @@
     var message = '<article id="loadmessage">thinking hard...<div class="links">&nbsp;</div><div class="flip">&nbsp;</div></article>';
     $('#message').prepend(message);
     $('#loadmessage').hide();
-    $('#message')[0].className = 'box info';
+    $('#message').attr('className', 'box info');
     $('#loadmessage').slideDown('slow');
   }
 
@@ -49,7 +49,7 @@
 
   function createFlipLink(link)
   {
-    var parts = link[0].href.match(
+    var parts = link.attr('href').match(
         /\/([^\/]*)\/([^\/]*)\/([0-9.]*)$/)
     if (parts)
     {
@@ -63,7 +63,7 @@
 
   function displayMessage(cssClass, message)
   {
-    $('#message')[0].className = "box " + cssClass;
+    $('#message').attr('className', "box " + cssClass);
     $('#loadmessage').replaceWith(message);
     var newArticle = $('#message article:first');
     newArticle.hide();
@@ -109,5 +109,4 @@
 // TODO
 // * make the form submit to a # url instead, and use
 // that.
-// * remove [0]s and use proper jQuery stuff.
 })();

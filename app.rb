@@ -211,6 +211,8 @@ helpers do
       'text/html'
     elsif formats.member? 'application/json'
       'application/json'
+    elsif formats.member? '*/*'
+      'text/html'
     else
       'text/plain'
     end

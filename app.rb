@@ -207,11 +207,11 @@ helpers do
 
   def derive_mime(request)
     formats = request.accept
-    if formats.member? 'text/html'
+    if formats.any? {|a| a =~ %r[^text/html]}
       'text/html'
-    elsif formats.member? 'application/json'
+    elsif formats.any? {|a| a=~ %r[^application/json]}
       'application/json'
-    elsif formats.member? '*/*'
+    elsif formats.any? {|a| a=~ %r[^\*/\*]}
       'text/html'
     else
       'text/plain'

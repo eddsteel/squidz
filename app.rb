@@ -119,6 +119,12 @@ get '/' do
   end
 end
 
+get '/ae' do
+  ae = request.accept.join(',')
+
+  "Yo dawg, I heard you like #{ae}"
+end
+
 get '/render' do
   p = request.params
   @result = Result.new(p['amount'], p['base'], p['target'],

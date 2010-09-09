@@ -274,7 +274,7 @@ __END__
     - @currencies.each do |currency|
       %option{:value => currency.code, :selected => @base && @base == currency.code ? 'selected' : nil}<
         = currency.label
-  %input{:id => 'amount', :name => 'amount', :type => 'number', :value => @amount || 1, :autofocus=>'autofocus', :min=>0, :max=> 999999999, :step => 0.1, :tabindex => 1}
+  %input{:id => 'amount', :name => 'amount', :type => 'number', :value => @amount || 1, :autofocus=>'autofocus', :min=>0, :max=> 999999999, :step => 1, :tabindex => 1}
   %span<
     in
   %select{:id=>'target', :name => 'target', :tabindex => 3}

@@ -318,7 +318,7 @@ __END__
   %div.flip<
     %a{:href => query_url(@result.target.code,
                           @result.base.code,
-                          @result.amount), 
+                          @result.amount),
                           :title => "See what #{@result.target.symbol}#{@result.amount} is in #{@result.base.label}"}><
       flip currencies
   %div.links

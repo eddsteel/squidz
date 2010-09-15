@@ -249,6 +249,11 @@ helpers do
         %Q[{"result":{"message":"All providers are unavailable"},"status":"error"}]
     end
   end
+
+  def jquery_location
+    return '/jquery.js' if @@offline
+    'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'
+  end
 end
 
 __END__
@@ -261,6 +266,8 @@ __END__
     %title<
       = @title || 'Convertor!'
     %link{:rel => 'stylesheet', :href => '/style.css'}
+    %script{:src => jquery_location}
+    %script{:src => '/behaviour.js'}
   %body
     =yield
     %footer
@@ -297,8 +304,6 @@ __END__
       thinking hard...
 - unless @offline
   %script{:src =>'/ga.js'}
-%script{:src => '/jquery.js'}
-%script{:src => '/behaviour.js'}
 
 @@result
 %article

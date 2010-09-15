@@ -45,6 +45,7 @@
    {
      displayMessage('error', 'something bad happened.');
    }
+   focus_amount();
   }
 
   function createFlipLink(link)
@@ -103,9 +104,13 @@
     return fireQuery(amount, target, source);
   };
 
+  var focus_amount = function()
+  {
+    $('#amount').select();
+  }
+
   var start = function()
   {
-    $('#amount').focus();
     $('#form').bind('submit', fire);
     var fliplink = $('#message article:first .flip a');
     if (fliplink.length > 0)
@@ -114,7 +119,13 @@
     }
   };
 
-  $(window).load(start);
+  $(document).ready(start);
+  $(document).bind('amount_ready', function(){
+    if (! Modernizr.input.autofocus)
+    {
+      focus_amount();
+    }
+  });
  
 // TODO
 // * make the form submit to a # url instead, and use

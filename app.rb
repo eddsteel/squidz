@@ -266,6 +266,7 @@ __END__
     %title<
       = @title || 'Convertor!'
     %link{:rel => 'stylesheet', :href => '/style.css'}
+    %script{:src => '/modernizr-1.5.min.js'}
     %script{:src => jquery_location}
     %script{:src => '/behaviour.js'}
   %body

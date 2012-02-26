@@ -275,7 +275,7 @@ __END__
       %span.thanks
         Currency conversion by <a href="http://google.com/finance/converter">google</a>
       %span.copyright
-        &copy; 2010 Edward Steel. Code <a href="http://github.com/eddsteel/squidz">released</a> under GNU GPL
+        &copy; 2010-2012 Edward Steel. Code <a href="http://github.com/eddsteel/squidz">released</a> under GNU GPL
 
 @@page
 %form{:id => 'form', :method => 'get', :action=>'/'}

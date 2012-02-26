@@ -17,8 +17,6 @@
 # License along with this program.  If not,
 # see <http://www.gnu.org/licenses/>.
 #
-# TODO
-#  decimal output (2.4 displayed as 2.4)
 
 require 'rubygems'
 require 'sinatra'
@@ -290,7 +288,7 @@ __END__
   %input{:id => 'amount', :name => 'amount',       |
     :type => 'number', :value => @amount || 1,     |
     :autofocus=>'true', :min=>0, :max=> 999999999, |
-    :step => 1, :tabindex => 1}
+    :step => 0.01, :tabindex => 1}
   %script<
     $(document).trigger('amount_ready');
   %span<

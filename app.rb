@@ -19,8 +19,6 @@
 #
 # TODO
 #  decimal output (2.4 displayed as 2.4)
-#  decimals in URL
-#
 
 require 'rubygems'
 require 'sinatra'

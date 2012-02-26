@@ -27,6 +27,7 @@ require 'sinatra'
 require 'json'
 require 'open-uri'
 require 'haml'
+require 'hpricot'
 require 'omgcsv'
 
 class ConversionError < Exception
@@ -242,8 +243,12 @@ helpers do
       return %Q[{"result":{"value":166.241,"target":"#{targt}","base":"#{base}"},"status":"ok"}]
     end
     begin
-      url = "http://xurrency.com/api/#{base}/#{targt}/#{amnt}"
-      return open(url).read
+      url = "http://google.com/finance/converter?a=#{amnt}&from=#{base}&to=#{targt}"
+      doc = Hpricot(open(url))
+      # Result is in span inside div with ID.
+      val = (doc / 'div#currency_converter_result span').text[/^[^ ]*/]
+      # wrap in JSON, since we're no longer getting it from the provider.
+      return %Q[{"result":{"value":#{val},"target":"#{targt}","base":"#{base}"},"status":"ok"}]
     rescue OpenURI::HTTPError
       raise ConversionError.new(503),
         %Q[{"result":{"message":"All providers are unavailable"},"status":"error"}]
@@ -273,7 +278,7 @@ __END__
     =yield
     %footer
       %span.thanks
-        Currency conversion by <a href="http://xurrency.com">xurrency.com</a>
+        Currency conversion by <a href="http://google.com/finance/converter">google</a>
       %span.copyright
         &copy; 2010 Edward Steel. Code <a href="http://github.com/eddsteel/squidz">released</a> under GNU GPL
 

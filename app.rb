@@ -59,8 +59,7 @@ class Result
 
   private
   def round(n, dps=2)
-    dp_val = 10 ** dps
-    n.to_i + (((n - (n.to_i)) * dp_val).to_i).to_f / dp_val
+    "%.#{dps}f" % n
   end
 end
 
